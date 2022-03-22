@@ -2,6 +2,12 @@
 require_once 'connect_bd.php';
 require_once 'index.php';
 
+$userEmail = $_POST['user_email'];
+$userPhone = $_POST['user_phone'];
+$userPassword = $_POST['user_password'];
+$userPassword2 = $_POST['user_password2'];
+$userName = $_POST['user_name'];
+$userSurname = $_POST['user_surname'];
 
 if($_POST['user_password'] !== $_POST['user_password2']){
     echo "<script>alert('Пороли не совпадают')</script>";
@@ -20,22 +26,19 @@ if(!filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
 
 $conn = connect();
 
-$sel = "SELECT * FROM users WHERE user_email = '$_POST[user_email]'";
+$sel = "SELECT * FROM users WHERE user_email = '$userEmail' ";
 $res =  $conn->query($sel);
 $num =  $res->rowCount();
 
-
 if($num == 0) {
-    $hash = password_hash($_POST["user_password"],PASSWORD_BCRYPT);
     $sql = "INSERT INTO users(user_name,user_surname,user_email,user_phone,user_password) 
-        VALUES('$_POST[user_name]','$_POST[user_surname]','$_POST[user_email]','$_POST[user_phone]','$hash')";
+        VALUES('$userName','$userSurname','$userEmail','$userPhone','$userPassword')";
     $result = $conn->query($sql);
-    $_SESSION['userName'] = $_POST('user_name');
+    $_SESSION['user_name'] = $userName;
     if($result) { echo "<script>alert('Пользователь успешно зарегистрирован')</script>"; }
     else  { echo "<script>alert('Ошибка!')</script>"; }
-
 }
-else { echo "Пользователь с таким именем существует! "; }
+else { echo "<script>alert('Такой пользователь уже существует!')</script>"; }
 
-exit('<meta http-equiv="refresh" content="0; url=index.php" />');
+header("Refresh: 5");
 

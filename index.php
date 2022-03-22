@@ -31,7 +31,7 @@
 </head>
 <body>
 
-<?php if (!isset($_SESSION['userEmail'])): ?>
+<?php if (var_dump($_SESSION['user_email'])): ?>
     <header>
         <button class="headerButton" id="mainButton">FilmReview</button>
         <button onclick="document.location='#SignIn',showSignIn()" class="headerButton" id="SignInButton">Войти</button>
@@ -39,7 +39,8 @@
     </header>
 <?php else: ?>
     </header>
-    <p class="tp-3 mb-2 bg-primary text-white">Привет, <?= $_SESSION['userName'] ?></p>
+    <button class="headerButton" id="mainButton">FilmReview</button>
+    <p class="tp-3 mb-2 bg-primary text-white">Привет, <?= $_SESSION['user_name'] ?></p>
     <a class="headerButton" href="logout.php">Выйти</a>
     </header>
 <?php endif; ?>

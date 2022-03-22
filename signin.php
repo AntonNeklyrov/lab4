@@ -4,12 +4,13 @@ require_once 'connect_bd.php';
 require_once 'index.php';
 
 $conn = connect();
-$hash = password_hash($_POST['user_password'],PASSWORD_BCRYPT);
+$userEmail = $_POST['user_login'];
+$userPassword = $_POST['user_password_SignIn'];
 
-$sql = "select *
+$sql = "select user_name
 from users
-where user_email='$_POST[user_email]'
-AND user_password='$hash'";
+where user_email='$userEmail'
+AND user_password='$userPassword'";
 
 $res = $conn->query($sql);
 $num = $res->rowCount();
@@ -19,7 +20,9 @@ if($num==0){
     exit('<meta http-equiv="refresh" content="0; url=index.php" />');
 }
 
-$_SESSiON['userEmail'] = $_POST('user_email');
+$name = $res->fetch(PDO::FETCH_COLUMN);
+
+$_SESSiON['user_email'] = $name;
 
 echo "<script>alert('Вход выполнен успешно!')</script>";
 exit('<meta http-equiv="refresh" content="0; url=index.php" />');
